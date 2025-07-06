@@ -8,25 +8,43 @@ public class BinaryTreeRightSideView {
 
         public Node(int data) {
             this.data = data;
-            this.left = null;
-            this.right = null;
         }
     }
-    public static int RightSideView(Node root) {
+
+    public static List<Integer> rightSideView(Node root) {
+        List<Integer> result = new ArrayList<>();
+        if (root == null) return result;
+
         Queue<Node> q = new LinkedList<>();
-
         q.add(root);
-        while(!q.isEmpty()) {
-            Node newNode = q.remove();
 
-            System.out.println(newNode.data);
+        while (!q.isEmpty()) {
+            int levelSize = q.size();
 
-            if (newNode.left != null) {
-                q.add(root.left);
-            }
-            if(newNode.left != null) {
-                q.add(root.right);
+            for (int i = 0; i < levelSize; i++) {
+                Node current = q.poll();
+
+                if (i == levelSize - 1) {
+                    result.add(current.data);
+                }
+
+                if (current.left != null) q.add(current.left);
+                if (current.right != null) q.add(current.right);
             }
         }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+
+        Node root = new Node(1);
+        root.left = new Node(2);
+        root.right = new Node(3);
+        root.left.right = new Node(5);
+        root.right.right = new Node(4);
+
+        List<Integer> rightView = rightSideView(root);
+        System.out.println("Right Side View: " + rightView);
     }
 }
